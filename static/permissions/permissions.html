@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>QA Smart Assistant: Permissions</title>
+  <link rel="stylesheet" href="permissions.css"/>
+</head>
+<body>
+<div class="card">
+
+  <div class="logo">
+    <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="3" width="5" height="9" rx="2.5" fill="white"/><path d="M3 9a7 7 0 0014 0" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+
+  <div>
+    <h1>Allow Permissions</h1>
+    <p class="sub">QA Smart Assistant needs access to your microphone and camera to record your voice and face-cam overlay during sessions.</p>
+  </div>
+
+  <div class="perm-list">
+
+    <div class="perm-item pending" id="item-mic">
+      <div class="perm-icon">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="7" y="2" width="6" height="10" rx="3" fill="currentColor"/><path d="M4 10a6 6 0 0012 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="perm-info">
+        <span class="perm-name">Microphone</span>
+        <span class="perm-desc">Record voice narration &amp; live transcription</span>
+        <span class="perm-status" id="status-mic">Waiting…</span>
+      </div>
+      <div class="perm-badge wait" id="badge-mic">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5" opacity=".4"/></svg>
+      </div>
+    </div>
+
+    <div class="perm-item pending" id="item-cam">
+      <div class="perm-icon">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M3 6h9a2 2 0 012 2v4a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5"/><path d="M14 8.5l4-2v5l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="perm-info">
+        <span class="perm-name">Camera <span class="optional">(optional)</span></span>
+        <span class="perm-desc">Face-cam overlay during recording</span>
+        <span class="perm-status" id="status-cam">Waiting…</span>
+      </div>
+      <div class="perm-badge wait" id="badge-cam">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5" opacity=".4"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notice">
+    <strong>Look at the top-left of your browser.</strong> Chrome will show a permission prompt bar. Click <strong>Allow</strong> to grant access. Camera is optional, you can deny it and continue.
+  </div>
+
+  <button class="btn-continue" id="btn-continue" disabled>
+    <div class="spinner" id="btn-spinner"></div>
+    <span id="btn-label">Requesting permissions…</span>
+  </button>
+
+</div>
+<script src="permissions.js"></script>
+</body>
+</html>

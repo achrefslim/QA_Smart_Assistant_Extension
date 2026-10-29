@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Smart Assistant</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SCREEN 0: AUTH (SIGN IN / SIGN UP)
+══════════════════════════════════ -->
+<div id="screen-auth" class="screen">
+  <header class="topbar tb-idle">
+    <div class="tb-brand">
+      <div class="tb-dot">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="3" width="5" height="9" rx="2.5" fill="white"/><path d="M3 9a7 7 0 0014 0" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="tb-title">QA Smart Assistant</span>
+    </div>
+  </header>
+
+  <div class="screen-body">
+
+    <div class="auth-tabs">
+      <button class="auth-tab-btn active" id="auth-tab-signin" data-auth-tab="signin">Sign In</button>
+      <button class="auth-tab-btn" id="auth-tab-signup" data-auth-tab="signup">Sign Up</button>
+    </div>
+
+    <!-- Sign In -->
+    <div class="auth-panel active" id="auth-panel-signin">
+      <button id="btn-google-signin" class="google-btn">
+        <svg viewBox="0 0 20 20" width="18" height="18"><path fill="#4285F4" d="M19.6 10.23c0-.68-.06-1.36-.18-2.02H10v3.83h5.38a4.6 4.6 0 01-2 3.02v2.5h3.23c1.9-1.75 2.99-4.32 2.99-7.33z"/><path fill="#34A853" d="M10 20c2.7 0 4.96-.89 6.62-2.42l-3.23-2.5c-.9.6-2.06.95-3.39.95-2.6 0-4.8-1.76-5.59-4.12H1.06v2.59A10 10 0 0010 20z"/><path fill="#FBBC05" d="M4.41 11.91a6 6 0 010-3.82V5.5H1.06a10 10 0 000 8.99l3.35-2.58z"/><path fill="#EA4335" d="M10 3.98c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.6 9.6 0 0010 0 10 10 0 001.06 5.5l3.35 2.59C5.2 5.74 7.4 3.98 10 3.98z"/></svg>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider"><span>or continue with email</span></div>
+
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input id="signin-email" class="context-input auth-input" type="email" placeholder="you@company.com" autocomplete="email" />
+        <span class="auth-field-error" id="signin-email-error"></span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <div class="pw-wrap">
+          <input id="signin-password" class="context-input auth-input" type="password" placeholder="Your password" autocomplete="current-password" />
+          <button type="button" class="pw-toggle" id="signin-password-toggle" title="Show password">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M1 10s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <span class="auth-field-error" id="signin-password-error"></span>
+      </div>
+
+      <button id="btn-signin" class="launch-btn">Sign In</button>
+
+      <button id="btn-forgot-password" class="auth-link-btn">Forgot password?</button>
+    </div>
+
+    <!-- Sign Up -->
+    <div class="auth-panel" id="auth-panel-signup">
+      <div class="field-group">
+        <label class="field-label">Display Name</label>
+        <input id="signup-name" class="context-input auth-input" type="text" placeholder="Your name" autocomplete="name" />
+        <span class="auth-field-error" id="signup-name-error"></span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Email</label>
+        <input id="signup-email" class="context-input auth-input" type="email" placeholder="you@company.com" autocomplete="email" />
+        <span class="auth-field-error" id="signup-email-error"></span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <div class="pw-wrap">
+          <input id="signup-password" class="context-input auth-input" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+          <button type="button" class="pw-toggle" id="signup-password-toggle" title="Show password">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M1 10s3-6 9-6 9 6 9 6-3 6-9 6-9-6-9-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+        </div>
+        <span class="auth-field-error" id="signup-password-error"></span>
+      </div>
+
+      <button id="btn-signup" class="launch-btn">Create Account</button>
+
+      <p class="auth-switch-note">Already have an account? <button id="link-goto-signin" class="auth-link-btn auth-link-inline">Sign In</button></p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN: FORGOT PASSWORD
+══════════════════════════════════ -->
+<div id="screen-forgot-password" class="screen">
+  <header class="topbar tb-idle">
+    <div class="tb-brand">
+      <button class="back-btn" id="btn-back-forgot-password">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M13 5l-5 5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="tb-title">Reset Password</span>
+    </div>
+  </header>
+
+  <div class="screen-body">
+    <p class="auth-switch-note" style="text-align:left;">We'll send you a link to reset your password.</p>
+
+    <div class="field-group">
+      <label class="field-label">Email</label>
+      <input id="forgot-email" class="context-input auth-input" type="email" placeholder="you@company.com" autocomplete="email" />
+      <span class="auth-field-error" id="forgot-email-error"></span>
+    </div>
+
+    <span class="auth-success-msg" id="forgot-success-msg" style="display:none;"></span>
+
+    <button id="btn-send-reset" class="launch-btn">Send Reset Link</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN: VERIFY EMAIL
+══════════════════════════════════ -->
+<div id="screen-verify-email" class="screen">
+  <header class="topbar tb-idle">
+    <div class="tb-brand">
+      <div class="tb-dot">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="3" width="5" height="9" rx="2.5" fill="white"/><path d="M3 9a7 7 0 0014 0" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="tb-title">QA Smart Assistant</span>
+    </div>
+  </header>
+
+  <div class="screen-body">
+    <div class="results-empty">
+      <svg viewBox="0 0 48 48" fill="none" class="results-empty-icon" style="color:var(--blue);">
+        <rect x="6" y="12" width="36" height="26" rx="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 14l16 14 16-14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="results-empty-title">Check your email</p>
+      <p class="results-empty-sub">We sent a verification link to <strong id="verify-email-address"></strong>. Click the link to activate your account.</p>
+
+      <span class="auth-field-error" id="verify-email-error"></span>
+      <span class="auth-success-msg" id="verify-success-msg" style="display:none;"></span>
+
+      <button id="btn-verify-continue" class="launch-btn" style="margin-top:6px;">I've verified — continue</button>
+      <button id="btn-verify-resend" class="auth-link-btn">Resend verification email</button>
+      <button id="btn-verify-different-account" class="auth-link-btn">Use a different account</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 1: IDLE / HOME
+══════════════════════════════════ -->
+<div id="screen-idle" class="screen active">
+  <header class="topbar tb-idle">
+    <div class="tb-brand">
+      <div class="tb-dot">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="3" width="5" height="9" rx="2.5" fill="white"/><path d="M3 9a7 7 0 0014 0" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="tb-title">QA Smart Assistant</span>
+    </div>
+    <div class="tb-right">
+      <span class="pill pill-ready">Ready</span>
+      <button id="btn-sign-out-home" class="signout-circle-btn" title="Sign out">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M8 3H4.5A1.5 1.5 0 003 4.5v11A1.5 1.5 0 004.5 17H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 14l4-4-4-4M17 10H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="screen-body">
+    <div class="welcome-card">
+      <div class="welcome-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="white"/></svg>
+      </div>
+      <div class="welcome-card-text">
+        <span class="welcome-card-title">Ready to Record</span>
+        <span class="welcome-card-sub">Set up your session below and start</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Tester Name</label>
+      <div class="input-wrap">
+        <input id="tester-name" class="field-input" type="text" placeholder="Enter your name" autocomplete="off" />
+        <svg class="input-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Session Title</label>
+      <div class="input-wrap">
+        <input id="session-title" class="field-input" type="text" placeholder="e.g. Checkout Flow Regression v2.4" autocomplete="off" />
+        <svg class="input-icon" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M4 10h8M4 14h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="start-area">
+      <button id="btn-start" class="start-btn">
+        <div class="start-btn-icon">
+          <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="white"/></svg>
+        </div>
+        <span class="start-lbl">START SESSION</span>
+        <svg class="start-arrow" viewBox="0 0 20 20" fill="none" width="16" height="16"><path d="M5 10h10M11 6l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <p class="start-hint">Fill in your details above to begin recording</p>
+    </div>
+
+    <div id="notes-preview" class="notes-chip" data-screen="notes">
+      <div class="notes-chip-icon">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="notes-chip-text">
+        <span class="notes-chip-count" id="notes-count">Loading notes</span>
+        <span class="notes-chip-sub">Tap to view or add a note</span>
+      </div>
+      <svg class="notes-chip-arrow" viewBox="0 0 20 20" fill="none"><path d="M8 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <nav class="tab-bar">
+    <button class="tab-btn active" data-screen="idle">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="7.5" width="2" height="5" rx="1" fill="currentColor"/><rect x="10.5" y="7.5" width="2" height="5" rx="1" fill="currentColor"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="tab-btn" data-screen="record-setup">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>Record</span>
+    </button>
+    <button class="tab-btn" data-screen="results">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Results</span>
+    </button>
+    <button class="tab-btn" data-screen="settings">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 2: RECORD SETUP
+══════════════════════════════════ -->
+<div id="screen-record-setup" class="screen">
+  <header class="topbar tb-setup">
+    <div class="tb-brand">
+      <button class="back-btn" id="btn-back">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M13 5l-5 5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="tb-title">Record Setup</span>
+    </div>
+  </header>
+
+  <div class="screen-body">
+
+    <!-- Session Template -->
+    <div class="setup-section">
+      <span class="setup-label">Quick Template</span>
+      <select id="session-template" class="context-select" style="width:100%;">
+        <option value="">No template</option>
+        <option value="login">🔐 Login Flow</option>
+        <option value="checkout">🛒 Checkout / Payment</option>
+        <option value="api">🔌 API Testing</option>
+        <option value="mobile">📱 Mobile Responsive</option>
+        <option value="regression">🔄 Regression Suite</option>
+        <option value="smoke">💨 Smoke Test</option>
+        <option value="accessibility">♿ Accessibility</option>
+        <option value="performance">⚡ Performance</option>
+      </select>
+    </div>
+
+    <!-- Countdown timer -->
+    <div class="setup-section">
+      <span class="setup-label">Countdown Before Recording</span>
+      <div class="countdown-row">
+        <button class="cnt-btn" id="cnt-minus">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M5 10h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="cnt-display">
+          <span class="cnt-value" id="cnt-value">3</span>
+          <span class="cnt-unit">sec</span>
+        </div>
+        <button class="cnt-btn" id="cnt-plus">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 5v10M5 10h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Options toggles -->
+    <div class="setup-section">
+      <span class="setup-label">Options</span>
+      <div class="options-list">
+
+        <div class="option-row" id="opt-mic">
+          <div class="option-left">
+            <div class="option-icon on">
+              <svg viewBox="0 0 20 20" fill="none"><rect x="7" y="2" width="6" height="10" rx="3" fill="currentColor"/><path d="M4 10a6 6 0 0012 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="10" y1="16" x2="10" y2="18.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <span class="option-label">Microphone</span>
+              <span class="option-sub">Record voice narration</span>
+            </div>
+          </div>
+          <div class="toggle on" id="toggle-mic"><div class="toggle-thumb"></div></div>
+        </div>
+
+        <div class="option-row" id="opt-cam">
+          <div class="option-left">
+            <div class="option-icon" id="icon-cam">
+              <svg viewBox="0 0 20 20" fill="none"><path d="M3 6h9a2 2 0 012 2v4a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.5"/><path d="M14 8.5l4-2v5l-4-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <span class="option-label">Webcam</span>
+              <span class="option-sub">Show face-cam overlay</span>
+            </div>
+          </div>
+          <div class="toggle" id="toggle-cam"><div class="toggle-thumb"></div></div>
+        </div>
+
+        <div class="option-row" id="opt-ctrlbar">
+          <div class="option-left">
+            <div class="option-icon on" id="icon-ctrlbar">
+              <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="7" width="16" height="6" rx="3" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="10" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/></svg>
+            </div>
+            <div>
+              <span class="option-label">Control Bar</span>
+              <span class="option-sub">Floating toolbar on screen</span>
+            </div>
+          </div>
+          <div class="toggle on" id="toggle-ctrlbar"><div class="toggle-thumb"></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quality -->
+    <div class="setup-section">
+      <span class="setup-label">Quality</span>
+      <div class="quality-row">
+        <div class="q-tag selected" data-q="720">720p</div>
+        <div class="q-tag" data-q="1080">1080p</div>
+        <div class="q-tag" data-q="4k">4K</div>
+        <div class="q-tag selected" data-q="mp4">MP4</div>
+      </div>
+    </div>
+
+    <!-- Priority -->
+    <div class="setup-section">
+      <span class="setup-label">Priority</span>
+      <div class="priority-row">
+        <button class="priority-btn" data-priority="critical">🔴 Critical</button>
+        <button class="priority-btn" data-priority="high">🟠 High</button>
+        <button class="priority-btn selected" data-priority="medium">🟡 Medium</button>
+        <button class="priority-btn" data-priority="low">🟢 Low</button>
+      </div>
+    </div>
+
+    <!-- Session Context -->
+    <div class="setup-section">
+      <span class="setup-label">Session Context</span>
+      <div class="context-grid">
+        <div class="context-field">
+          <label class="context-label">Layer</label>
+          <select id="ctx-layer" class="context-select">
+            <option value="">Select layer</option>
+            <option value="Frontend">Frontend</option>
+            <option value="Backend">Backend</option>
+            <option value="API">API</option>
+            <option value="Mobile">Mobile</option>
+            <option value="Full Stack">Full Stack</option>
+          </select>
+        </div>
+        <div class="context-field">
+          <label class="context-label">Environment</label>
+          <select id="ctx-env" class="context-select">
+            <option value="">Select env</option>
+            <option value="Development">Development</option>
+            <option value="Staging">Staging</option>
+            <option value="Production">Production</option>
+          </select>
+        </div>
+        <div class="context-field">
+          <label class="context-label">Test Type</label>
+          <select id="ctx-type" class="context-select">
+            <option value="">Select type</option>
+            <option value="Functional">Functional</option>
+            <option value="Regression">Regression</option>
+            <option value="Exploratory">Exploratory</option>
+            <option value="Smoke">Smoke</option>
+            <option value="UAT">UAT</option>
+          </select>
+        </div>
+        <div class="context-field">
+          <label class="context-label">Sprint / Build</label>
+          <input id="ctx-sprint" class="context-input" type="text" placeholder="e.g. Sprint 14"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="setup-section">
+      <span class="setup-label">Tags</span>
+      <div class="tags-input-row">
+        <input id="tag-input" class="tags-input" type="text" placeholder="Add a tag and press Enter"/>
+        <button id="btn-add-tag" class="tag-add-btn">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div id="tags-list" class="tags-list"></div>
+    </div>
+
+    <!-- Rules Checklist -->
+    <div class="setup-section">
+      <span class="setup-label">Test Rules / Checklist</span>
+      <div class="rules-input-row">
+        <input id="rule-input" class="tags-input" type="text" placeholder="Add a test rule and press Enter"/>
+        <button id="btn-add-rule" class="tag-add-btn">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div id="rules-list" class="rules-list"></div>
+    </div>
+
+    <button id="btn-launch" class="launch-btn">
+      <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" fill="white"/></svg>
+      Start Recording
+    </button>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 3: NOTES
+══════════════════════════════════ -->
+<div id="screen-notes" class="screen">
+  <header class="topbar tb-setup">
+    <div class="tb-brand">
+      <button class="back-btn" data-screen="idle">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M13 5l-5 5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="tb-title">Notes</span>
+    </div>
+  </header>
+
+  <div class="screen-body">
+    <div class="notes-host" id="notes-host">this page</div>
+
+    <div class="note-compose">
+      <textarea id="note-input" class="note-textarea" placeholder="Write a note about a bug, an idea, or anything worth remembering for this page..." rows="3"></textarea>
+      <button id="btn-add-note" class="btn-primary btn-add-note">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Add Note
+      </button>
+    </div>
+
+    <div class="setup-label notes-list-label">Saved Notes</div>
+    <div class="notes-list" id="notes-list">
+      <p class="notes-empty">No notes yet for this page.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 4: RECORDING (popup view)
+══════════════════════════════════ -->
+<div id="screen-recording-active" class="screen">
+  <div class="recording-active-body">
+    <div class="rec-pulse">
+      <span class="rec-pulse-ring"></span>
+      <span class="rec-pulse-dot"></span>
+    </div>
+    <p class="rec-active-title">Recording in progress</p>
+    <p class="rec-active-sub">You can close this popup, recording continues in its own tab. Use the floating control bar to pause or stop.</p>
+    <button id="btn-stop-from-popup" class="btn-danger rec-active-stop">
+      <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="5" width="10" height="10" rx="2" fill="white"/></svg>
+      Stop Recording
+    </button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 5: WAITING FOR PERMISSIONS
+══════════════════════════════════ -->
+<div id="screen-waiting-perms" class="screen">
+  <div class="recording-active-body">
+    <div class="spinner-ring"></div>
+    <p class="rec-active-title">Waiting for permissions</p>
+    <p class="rec-active-sub">Grant access in the new tab, then click <strong>Continue to Recording</strong>.</p>
+    <button id="cancel-perms" class="btn-ghost rec-active-stop">Cancel</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 6: RESULTS
+══════════════════════════════════ -->
+<div id="screen-results" class="screen">
+  <header class="topbar tb-results">
+    <div class="tb-brand">
+      <div class="tb-dot tb-dot-success">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M5 10l4 4 6-7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="tb-title">Last Session</span>
+    </div>
+  </header>
+
+  <div class="screen-body results-body">
+
+    <div id="results-empty" class="results-empty">
+      <svg viewBox="0 0 48 48" fill="none" class="results-empty-icon">
+        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 24l6 6 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p class="results-empty-title">No session recorded yet</p>
+      <p class="results-empty-sub">After a recording finishes, a summary will appear here.</p>
+      <button data-screen="record-setup" class="tab-btn-link">
+        Start a new recording
+        <svg viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div id="results-data" class="results-data" style="display:none;">
+      <button data-screen="record-setup" class="launch-btn">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" fill="white"/></svg>
+        Start New Recording
+      </button>
+
+      <!-- Stats bar -->
+      <div class="results-stats" id="results-stats"></div>
+
+      <!-- Dashboard -->
+      <div class="results-dashboard" id="results-dashboard">
+        <div class="dash-panel">
+          <span class="dash-panel-title">Sessions this week</span>
+          <div class="dash-week-bars" id="dash-week-bars"></div>
+        </div>
+
+        <div class="dash-panel">
+          <span class="dash-panel-title">Bugs by severity</span>
+          <div id="dash-severity"></div>
+        </div>
+
+        <div class="dash-panel">
+          <span class="dash-panel-title">Sessions by priority</span>
+          <div id="dash-priority"></div>
+        </div>
+
+        <div class="dash-panel">
+          <span class="dash-panel-title">Most used tags</span>
+          <div class="dash-tags" id="dash-top-tags"></div>
+        </div>
+
+        <div class="dash-panel">
+          <span class="dash-panel-title">Bug severity trend</span>
+          <div id="dash-trend"></div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="results-search-wrap">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M13 13l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="results-search" class="results-search" type="text" placeholder="Search sessions…"/>
+      </div>
+
+      <!-- Sort + bulk actions -->
+      <div class="results-toolbar">
+        <select id="results-sort" class="results-sort">
+          <option value="priority-desc">Priority: High → Low</option>
+          <option value="priority-asc">Priority: Low → High</option>
+        </select>
+        <button id="btn-download-all" class="results-toolbar-btn" title="Download all sessions as a zip">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M10 3v10m0 0l-4-4m4 4l4-4M4 15v1.5A1.5 1.5 0 005.5 18h9a1.5 1.5 0 001.5-1.5V15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="btn-delete-all" class="results-toolbar-btn results-toolbar-btn-danger" title="Delete all sessions">
+          <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
+            <path d="M4 6h12M8 6V4h4v2M7 6l.5 9.5a1 1 0 001 .95h3a1 1 0 001-.95L13 6"
+              stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="results-bulk-confirm" class="del-confirm-bar" style="display:none;">
+        <span class="del-confirm-msg">Delete ALL sessions? This cannot be undone.</span>
+        <button id="results-bulk-yes" class="del-confirm-yes">Delete All</button>
+        <button id="results-bulk-no" class="del-confirm-no">Cancel</button>
+      </div>
+
+      <div id="results-list" class="results-list"></div>
+    </div>
+
+  </div>
+  <nav class="tab-bar">
+    <button class="tab-btn" data-screen="idle"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><rect x="7.5" y="7.5" width="2" height="5" rx="1" fill="currentColor"/><rect x="10.5" y="7.5" width="2" height="5" rx="1" fill="currentColor"/></svg><span>Home</span></button>
+    <button class="tab-btn" data-screen="record-setup"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/></svg><span>Record</span></button>
+    <button class="tab-btn active" data-screen="results"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Results</span></button>
+    <button class="tab-btn" data-screen="settings"><svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Settings</span></button>
+    
+  </nav>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCREEN 7: SETTINGS (Connectors)
+══════════════════════════════════ -->
+<div id="screen-settings" class="screen">
+  <header class="topbar tb-setup">
+    <div class="tb-brand">
+      <button class="back-btn" data-screen="idle">
+        <svg viewBox="0 0 20 20" fill="none"><path d="M13 5l-5 5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="tb-dot">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.5" stroke="white" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="tb-title">Settings</span>
+    </div>
+  </header>
+  <div class="screen-body">
+
+    <!-- Jira Connector -->
+    <div class="settings-section">
+      <div class="settings-section-head">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" fill="#0052CC"/><path d="M10 5l3 5-3 3-3-3 3-5z" fill="white"/></svg>
+        <span class="settings-section-title">Jira Connector</span>
+        <span id="jira-status-badge" class="connector-badge">Not configured</span>
+      </div>
+      <div class="settings-fields">
+        <div class="settings-field">
+          <label class="context-label">Jira URL</label>
+          <input id="jira-url" class="context-input" type="url" placeholder="https://yourteam.atlassian.net"/>
+        </div>
+        <div class="settings-field">
+          <label class="context-label">Email</label>
+          <input id="jira-email" class="context-input" type="email" placeholder="you@company.com"/>
+        </div>
+        <div class="settings-field">
+          <label class="context-label">API Token</label>
+          <input id="jira-token" class="context-input" type="password" placeholder="Your Jira API token"/>
+        </div>
+        <div class="settings-field">
+          <label class="context-label">Project Key</label>
+          <input id="jira-project" class="context-input" type="text" placeholder="e.g. QA, DEV, TEST"/>
+        </div>
+        <button class="launch-btn" id="btn-save-jira" style="margin-top:4px;">Save Jira Settings</button>
+      </div>
+    </div>
+
+    <!-- ClickUp Connector -->
+    <div class="settings-section" style="margin-top:16px;">
+      <div class="settings-section-head">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="3" fill="#7B68EE"/><path d="M5 11l3-3 2 2 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="settings-section-title">ClickUp Connector</span>
+        <span id="clickup-status-badge" class="connector-badge">Not configured</span>
+      </div>
+      <div class="settings-fields">
+        <div class="settings-field">
+          <label class="context-label">API Token</label>
+          <input id="clickup-token" class="context-input" type="password" placeholder="Your ClickUp API token"/>
+        </div>
+        <div class="settings-field">
+          <label class="context-label">List ID</label>
+          <input id="clickup-list" class="context-input" type="text" placeholder="e.g. 12345678"/>
+        </div>
+        <button class="launch-btn" id="btn-save-clickup" style="margin-top:4px;">Save ClickUp Settings</button>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcuts -->
+    <div class="settings-section" style="margin-top:16px;">
+      <div class="settings-section-head">
+        <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 9h.01M8.5 9h.01M11.5 9h.01M14.5 9h.01M6 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="settings-section-title">Keyboard Shortcuts</span>
+      </div>
+      <div class="settings-fields">
+
+        <div class="shortcut-row" data-action="pause">
+          <span class="shortcut-label">Pause / Resume recording</span>
+          <button class="shortcut-key-btn" id="shortcut-pause-btn" data-action="pause">Alt + P</button>
+          <button class="shortcut-reset-btn" data-action="pause" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="stop">
+          <span class="shortcut-label">Stop recording</span>
+          <button class="shortcut-key-btn" id="shortcut-stop-btn" data-action="stop">Alt + S</button>
+          <button class="shortcut-reset-btn" data-action="stop" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="screenshot">
+          <span class="shortcut-label">Take screenshot</span>
+          <button class="shortcut-key-btn" id="shortcut-screenshot-btn" data-action="screenshot">Alt + C</button>
+          <button class="shortcut-reset-btn" data-action="screenshot" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="draw">
+          <span class="shortcut-label">Toggle draw mode</span>
+          <button class="shortcut-key-btn" id="shortcut-draw-btn" data-action="draw">Alt + D</button>
+          <button class="shortcut-reset-btn" data-action="draw" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="bug">
+          <span class="shortcut-label">Mark bug annotation</span>
+          <button class="shortcut-key-btn" id="shortcut-bug-btn" data-action="bug">Alt + B</button>
+          <button class="shortcut-reset-btn" data-action="bug" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="mic">
+          <span class="shortcut-label">Mute / unmute microphone</span>
+          <button class="shortcut-key-btn" id="shortcut-mic-btn" data-action="mic">Alt + M</button>
+          <button class="shortcut-reset-btn" data-action="mic" title="Reset to default">↺</button>
+        </div>
+
+        <div class="shortcut-row" data-action="camera">
+          <span class="shortcut-label">Turn camera on / off</span>
+          <button class="shortcut-key-btn" id="shortcut-camera-btn" data-action="camera">Alt + K</button>
+          <button class="shortcut-reset-btn" data-action="camera" title="Reset to default">↺</button>
+        </div>
+
+        <button class="launch-btn" id="btn-save-shortcuts" style="margin-top:4px;">Save Shortcuts</button>
+      </div>
+    </div>
+
+    <!-- Session Timer Warning -->
+    <div class="settings-section" style="margin-top:16px;">
+      <div class="settings-section-head">
+        <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 7v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 2.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="settings-section-title">Session Timer Warning</span>
+      </div>
+      <div class="settings-fields">
+        <div class="settings-field">
+          <label class="context-label">Warn me after</label>
+          <div class="timer-input-row">
+            <input id="timer-max-minutes" class="context-input" type="number" min="1" max="120" value="15" style="width:80px;"/>
+            <span class="timer-unit-label">minutes</span>
+          </div>
+        </div>
+        <p class="settings-hint">You'll receive an alert when your recording exceeds this duration. Shorter sessions produce better AI reports.</p>
+        <button class="launch-btn" id="btn-save-timer" style="margin-top:4px;">Save</button>
+      </div>
+    </div>
+
+    <!-- Account -->
+    <div class="settings-section" style="margin-top:16px;background:none;border:none;">
+      <button id="btn-sign-out" class="btn-danger-outline">Sign Out</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="../shared/db.js"></script>
+<script src="../shared/jszip.min.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

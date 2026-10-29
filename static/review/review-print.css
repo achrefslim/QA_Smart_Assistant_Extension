@@ -1,0 +1,101 @@
+/* ════════════════════════════════
+   PRINT / PDF STYLESHEET
+   Used when user clicks Export PDF
+════════════════════════════════ */
+@page {
+  size: A4;
+  margin: 20mm 18mm;
+}
+
+@media print {
+  /* Hide UI-only elements */
+  .video-side,
+  .panel-header .panel-logo,
+  .notice,
+  .actions,
+  .lang-btn-row,
+  #btn-whisper,
+  #btn-dl,
+  #btn-new,
+  #btn-zip,
+  #btn-pdf,
+  #btn-jira,
+  #btn-clickup,
+  .connector-status,
+  .jira-modal,
+  .clickup-modal,
+  .annotation-add-row,
+  .source-badge,
+  #whisper-status,
+  .cloud-grid,
+  .qa-no-print { display: none !important; }
+
+  /* Reset layout — single column */
+  body { background: white !important; color: #0F172A !important; font-family: Arial, sans-serif; }
+  .page { display: block !important; }
+  .side-panel {
+    width: 100% !important; max-width: 100% !important;
+    background: white !important; padding: 0 !important;
+    border: none !important; box-shadow: none !important;
+  }
+  .panel-body { padding: 0 !important; gap: 16px !important; }
+
+  /* Header */
+  .panel-title { font-size: 22px !important; color: #1E1B4B !important; margin-bottom: 2px !important; }
+  .panel-sub   { font-size: 13px !important; color: #64748B !important; }
+
+  /* Stats row */
+  .stats-row { border: 1px solid #E2E8F0 !important; border-radius: 8px !important; }
+  .stat-card { background: #F8FAFC !important; }
+  .stat-label { color: #94A3B8 !important; }
+  .stat-value { color: #0F172A !important; }
+  .stat-value.accent { color: #2563EB !important; }
+
+  /* Severity counter */
+  .severity-counter { border: 1px solid #E2E8F0 !important; }
+
+  /* Metadata panel */
+  .meta-panel { border: 1px solid #E2E8F0 !important; background: #F8FAFC !important; }
+  .meta-label { color: #94A3B8 !important; }
+  .meta-value { color: #0F172A !important; }
+
+  /* Rules */
+  .rule-check-item { border: 1px solid #E2E8F0 !important; background: white !important; break-inside: avoid; }
+  .rule-check-text { color: #0F172A !important; }
+  .rule-check-item.checked .rule-check-text { color: #94A3B8 !important; }
+
+  /* Annotations */
+  .annotation-item { border: 1px solid #E2E8F0 !important; background: #F8FAFC !important; break-inside: avoid; }
+  .annotation-text { color: #0F172A !important; }
+  .annotation-ts   { color: #2563EB !important; background: #EFF6FF !important; }
+
+  /* Transcript */
+  .t-row  { border: 1px solid #E2E8F0 !important; background: white !important; break-inside: avoid; }
+  .t-ts   { color: #2563EB !important; }
+  .t-text { color: #0F172A !important; }
+  .t-list { max-height: none !important; overflow: visible !important; }
+
+  /* Screenshots */
+  .screenshots-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .screenshot-item  { break-inside: avoid; border: 1px solid #E2E8F0 !important; }
+  .screenshot-item-dl { display: none !important; }
+
+  /* Section titles */
+  .section-title { color: #1E1B4B !important; font-weight: 700 !important; }
+
+  /* Page breaks */
+  .transcript-box,
+  .screenshots-panel { page-break-inside: avoid; }
+
+  /* Print header watermark */
+  .side-panel::before {
+    content: 'QA Smart Assistant — Session Report';
+    display: block;
+    font-size: 11px;
+    color: #94A3B8;
+    text-align: right;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #2563EB;
+    margin-bottom: 16px;
+  }
+}

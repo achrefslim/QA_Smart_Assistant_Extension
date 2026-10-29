@@ -1,0 +1,215 @@
+#qa-controlbar-host {
+  position: fixed;
+  left: 50%;
+  top: 92%;
+  transform: translate(-50%, -50%);
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  user-select: none;
+  pointer-events: none;
+  visibility: hidden; /* revealed once the saved position has loaded, avoids a flash at the default spot */
+}
+
+#qa-controlbar-host * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.qa-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #101A2C;
+  border: 1px solid rgba(148,163,253,0.18);
+  border-radius: 50px;
+  padding: 6px 14px 6px 8px;
+  pointer-events: all;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(59,130,246,0.06);
+  cursor: grab;
+}
+
+.qa-bar.qa-dragging { cursor: grabbing; }
+
+.qa-grip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 28px;
+  flex-shrink: 0;
+  color: rgba(148,163,253,0.4);
+  cursor: grab;
+}
+.qa-grip svg { width: 10px; height: 16px; }
+
+.qa-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 10px;
+  border-right: 1px solid rgba(148,163,253,0.16);
+}
+
+.qa-timer {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: white;
+  letter-spacing: 0.04em;
+  min-width: 40px;
+}
+
+.qa-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FB3A5D;
+  animation: qa-blink 1s ease-in-out infinite;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(251,58,93,.6);
+}
+
+@keyframes qa-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.qa-bar-center {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+}
+
+.qa-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  color: rgba(248,250,252,0.72);
+  position: relative;
+}
+
+.qa-btn:hover { background: rgba(148,163,253,0.14); color: white; }
+.qa-btn:active { transform: scale(0.92); }
+
+.qa-btn svg { width: 18px; height: 18px; pointer-events: none; }
+
+.qa-btn-pause {
+  background: linear-gradient(135deg,#3B82F6,#6366F1);
+  color: white;
+  width: 38px;
+  height: 38px;
+  box-shadow: 0 4px 14px rgba(59,130,246,.4);
+}
+
+.qa-btn-pause:hover { filter: brightness(1.1); }
+
+.qa-btn-stop {
+  background: linear-gradient(135deg,#FB3A5D,#E11D48);
+  color: white;
+  width: 38px;
+  height: 38px;
+  box-shadow: 0 4px 14px rgba(251,58,93,.4);
+}
+
+.qa-btn-stop:hover { filter: brightness(1.1); }
+
+.qa-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(148,163,253,0.18);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.qa-btn-muted { color: rgba(248,250,252,0.3); }
+.qa-btn-muted:hover { background: rgba(148,163,253,0.08); color: rgba(248,250,252,0.5); }
+
+.qa-btn-active { color: white; background: rgba(99,102,241,0.3); }
+.qa-btn-active:hover { background: rgba(99,102,241,0.42); }
+
+/* Cursor tool selector popup */
+.qa-cursor-popup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #101A2C;
+  border: 1px solid rgba(148,163,253,0.2);
+  border-radius: 14px;
+  padding: 8px;
+  display: flex;
+  gap: 4px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55);
+}
+
+.qa-cursor-popup.hidden { display: none; }
+
+.qa-cursor-opt {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(248,250,252,0.6);
+  transition: all 0.15s;
+}
+
+.qa-cursor-opt:hover { background: rgba(148,163,253,0.14); color: white; }
+.qa-cursor-opt.active { background: rgba(99,102,241,0.34); color: #C7D2FE; }
+.qa-cursor-opt svg { width: 18px; height: 18px; }
+
+/* Collapse toggle */
+.qa-btn-collapse { margin-left: 4px; }
+
+.qa-bar.collapsed .qa-bar-center,
+.qa-bar.collapsed .qa-divider-r {
+  display: none;
+}
+
+/* ── Color picker button ── */
+.qa-color-btn { position: relative; }
+.qa-color-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.5);
+  display: block; flex-shrink: 0;
+}
+.qa-color-popup {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #101A2C;
+  border: 1px solid rgba(148,163,253,0.2);
+  border-radius: 50px;
+  padding: 6px 8px;
+  display: flex;
+  gap: 6px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.55);
+  z-index: 2147483647;
+}
+.qa-color-popup.hidden { display: none; }
+.qa-color-opt {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer; transition: transform .1s, border-color .1s;
+}
+.qa-color-opt:hover { transform: scale(1.2); }
+.qa-color-opt.active { border-color: white; }
+
+/* ── Screenshot flash ── */
+.qa-screenshot-flash {
+  font-size: 11px; font-weight: 700;
+  color: #22C55E; white-space: nowrap;
+  animation: qa-fadeout 1.8s forwards;
+}
+.qa-screenshot-flash.hidden { display: none; }
+@keyframes qa-fadeout { 0%{opacity:1} 70%{opacity:1} 100%{opacity:0} }

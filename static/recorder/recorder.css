@@ -1,0 +1,62 @@
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-page:#EEF3FC;--bg-panel:#FFFFFF;--bg-elevated:#F3F7FE;--bg-elevated-2:#E6EEFC;
+  --border-soft:rgba(37,99,235,.14);--border-strong:rgba(37,99,235,.28);
+  --blue:#2563EB;--blue-bright:#3B82F6;--violet:#7C3AED;--cyan:#0891B2;
+  --brand-grad:linear-gradient(135deg,#3B82F6 0%,#6366F1 55%,#8B5CF6 100%);
+  --rec:#E11D48;--rec-d:#BE123C;
+  --success:#059669;
+  --text-hi:#0F172A;--text-md:#475569;--text-lo:#94A3B8;
+  --font:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+}
+html,body{font-family:var(--font);background:var(--bg-page);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased;overflow:hidden}
+
+.rc-shell{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;background:var(--bg-page)}
+.rc-card{width:100%;max-width:420px;background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:24px;padding:34px 30px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;box-shadow:0 24px 56px rgba(37,99,235,.12)}
+
+.rc-logo{width:48px;height:48px;border-radius:14px;background:var(--brand-grad);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(59,130,246,.32);flex-shrink:0}
+.rc-logo svg{width:24px;height:24px}
+
+.rc-spinner{width:46px;height:46px;border-radius:50%;border:3px solid rgba(37,99,235,.14);border-top-color:var(--blue);animation:rc-spin .8s linear infinite}
+@keyframes rc-spin{to{transform:rotate(360deg)}}
+
+.rc-status-row{display:flex;align-items:center;gap:8px}
+.rc-dot{width:9px;height:9px;border-radius:50%;background:var(--rec);animation:rc-blink 1s ease-in-out infinite;flex-shrink:0}
+@keyframes rc-blink{0%,100%{opacity:1}50%{opacity:.3}}
+.rc-status-text{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-md)}
+
+.rc-timer{font-size:58px;font-weight:800;color:var(--text-hi);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.rc-session{font-size:13px;color:var(--text-md);max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.rc-meta-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.rc-meta-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;background:var(--bg-elevated);border:1px solid var(--border-soft);font-size:11px;font-weight:500;color:var(--text-md)}
+.rc-meta-pill svg{width:13px;height:13px;flex-shrink:0}
+.rc-meta-pill.active{color:var(--blue);border-color:rgba(37,99,235,.32);background:rgba(37,99,235,.1)}
+
+.rc-actions{display:flex;gap:10px;width:100%;margin-top:6px}
+.rc-btn{flex:1;height:46px;border-radius:14px;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;transition:all .15s;font-family:var(--font)}
+.rc-card > .rc-btn-primary{height:58px;font-size:15px;border-radius:16px;letter-spacing:.02em}
+.rc-btn svg{width:16px;height:16px;flex-shrink:0}
+.rc-btn:hover{transform:translateY(-1px)}
+.rc-btn:active{transform:scale(.97)}
+.rc-btn-pause{background:var(--bg-elevated);border:1.5px solid var(--border-soft);color:var(--text-hi)}
+.rc-btn-pause:hover{background:var(--bg-elevated-2)}
+.rc-btn-stop{background:linear-gradient(135deg,#FB7185,var(--rec-d));color:white;box-shadow:0 8px 20px rgba(225,29,72,.3)}
+.rc-btn-primary{background:var(--brand-grad);color:white;box-shadow:0 8px 20px rgba(59,130,246,.3)}
+.rc-btn-ghost{background:none;border:1.5px solid var(--border-soft);color:var(--text-md)}
+.rc-btn-ghost:hover{border-color:var(--border-strong);color:var(--text-hi)}
+
+.rc-title{font-size:17px;font-weight:700;color:var(--text-hi)}
+.rc-sub{font-size:12.5px;color:var(--text-md);line-height:1.65;max-width:300px}
+.rc-sub strong{color:var(--text-hi)}
+.rc-hint{font-size:11px;color:var(--text-lo);line-height:1.6;max-width:300px}
+
+.rc-error-icon{color:var(--rec)}
+.rc-error-icon svg{width:44px;height:44px}
+.rc-error-title{font-size:16px;font-weight:700;color:var(--rec-d)}
+
+.rc-success-icon{color:var(--success)}
+.rc-success-icon svg{width:48px;height:48px}
+
+.rc-progress{width:100%;height:4px;border-radius:999px;background:var(--bg-elevated);overflow:hidden}
+.rc-progress-fill{height:100%;background:var(--brand-grad);width:0%;transition:width .3s}

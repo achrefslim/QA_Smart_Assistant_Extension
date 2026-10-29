@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>QA Session Viewer</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #f8fafc; color: #0f172a; }
+    h1 { color: #1e1b4b; border-bottom: 3px solid #7c3aed; padding-bottom: 10px; }
+    .meta { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 16px 0; }
+    .meta p { margin: 6px 0; font-size: 14px; }
+    .label { font-weight: 700; color: #64748b; min-width: 120px; display: inline-block; }
+    .section { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin: 16px 0; }
+    .section h2 { font-size: 13px; font-weight: 800; color: #7c3aed; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 12px; }
+    .rule { font-size: 13px; padding: 4px 0; }
+    .rule.passed { color: #059669; }
+    .rule.failed { color: #94a3b8; }
+    .bug { background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin: 8px 0; }
+    .bug-sev { font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    .sev-critical { color: #ef4444; }
+    .sev-high { color: #f97316; }
+    .sev-medium { color: #eab308; }
+    .sev-low { color: #22c55e; }
+    .transcript-row { font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+    .ts { color: #2563eb; font-weight: 700; margin-right: 10px; }
+    .error { text-align: center; padding: 60px; color: #ef4444; }
+    .badge { display:inline-block; background:#ede9fe; color:#7c3aed; border-radius:20px; padding:2px 10px; font-size:11px; font-weight:700; margin:2px; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  const params = new URLSearchParams(location.search);
+  const encoded = params.get('session');
+  const root = document.getElementById('root');
+
+  if (!encoded) {
+    root.innerHTML = '<div class="error"><h2>No session data found in URL</h2><p>This link may be invalid or incomplete.</p></div>';
+  } else {
+    try {
+      const json = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+      const rules = json.rules || [];
+      const annotations = json.annotations || [];
+      const transcript = json.transcript || [];
+      const tags = json.tags || [];
+
+      const priorityColors = { critical:'#ef4444', high:'#f97316', medium:'#eab308', low:'#22c55e' };
+      const priorityLabels = { critical:'P1 Critical', high:'P2 High', medium:'P3 Medium', low:'P4 Low' };
+
+      function formatTimestamp(val) {
+        const t = val;
+        const formatted = typeof t === 'number' ? Math.floor(t/60)+':'+String(t%60).padStart(2,'0') : (t || '?');
+        return formatted;
+      }
+
+      root.innerHTML = `
+        <h1>QA Session Report — ${json.title || 'QA Session'}</h1>
+
+        <div class="meta">
+          <p><span class="label">Tester</span>${json.tester || '—'}</p>
+          <p><span class="label">Date</span>${json.createdAt || '—'}</p>
+          <p><span class="label">Duration</span>${Math.floor((json.durationSec||0)/60)}m ${(json.durationSec||0)%60}s</p>
+          <p><span class="label">Priority</span><span style="color:${priorityColors[json.priority]||'#64748b'};font-weight:700">${priorityLabels[json.priority]||json.priority||'—'}</span></p>
+          <p><span class="label">Layer</span>${json.layer||'—'}</p>
+          <p><span class="label">Environment</span>${json.environment||'—'}</p>
+          <p><span class="label">Test Type</span>${json.testType||'—'}</p>
+          <p><span class="label">Sprint</span>${json.sprint||'Not specified'}</p>
+          ${tags.length ? `<p><span class="label">Tags</span>${tags.map(t=>`<span class="badge">${t}</span>`).join('')}</p>` : ''}
+        </div>
+
+        ${rules.length ? `
+        <div class="section">
+          <h2>Test Rules — ${rules.filter(r=>r.checked).length}/${rules.length} passed</h2>
+          ${rules.map(r=>`<div class="rule ${r.checked?'passed':'failed'}">${r.checked?'✓':'○'} ${r.text}</div>`).join('')}
+        </div>` : ''}
+
+        ${annotations.length ? `
+        <div class="section">
+          <h2>Bug Annotations — ${annotations.length} found</h2>
+          ${annotations.map((a,i)=>`
+            <div class="bug">
+              <div class="bug-sev sev-${a.severity}">Bug #${i+1} — ${a.severity.toUpperCase()}</div>
+              <div style="font-size:13px;margin-top:4px;">[${formatTimestamp(a.ts)}] ${a.text}</div>
+            </div>`).join('')}
+        </div>` : '<div class="section"><h2>Bug Annotations</h2><p style="color:#94a3b8;font-size:13px;">No bugs annotated in this session.</p></div>'}
+
+        ${transcript.length ? `
+        <div class="section">
+          <h2>Voice Transcript</h2>
+          ${transcript.map(t=>`<div class="transcript-row"><span class="ts">[${formatTimestamp(t.ts)}]</span>${t.text}</div>`).join('')}
+        </div>` : ''}
+
+        <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:32px;">
+          Generated by QA Smart Assistant · Session data encoded in URL · No server needed
+        </p>`;
+    } catch(e) {
+      root.innerHTML = '<div class="error"><h2>Could not decode session data</h2><p>The link may be corrupted or incomplete.</p></div>';
+    }
+  }
+</script>
+</body>
+</html>

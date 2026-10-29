@@ -1,0 +1,14 @@
+# Secrets (API keys and Firebase config)
+src/shared/config/secrets.ts
+.env
+
+# Dependencies and build output
+node_modules/
+dist/
+*.zip
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
